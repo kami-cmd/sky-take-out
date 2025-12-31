@@ -96,18 +96,34 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     /**
      * 分页查询
+     *
      * @param employeePageQueryDTO
      * @return
      */
     public PageResult page(EmployeePageQueryDTO employeePageQueryDTO) {
-        PageHelper.startPage(employeePageQueryDTO.getPage(),employeePageQueryDTO.getPageSize());
+        PageHelper.startPage(employeePageQueryDTO.getPage(), employeePageQueryDTO.getPageSize());
 
-      Page<Employee> page= employeeMapper.page(employeePageQueryDTO);
+        Page<Employee> page = employeeMapper.page(employeePageQueryDTO);
 
         long total = page.getTotal();
         List<Employee> records = page.getResult();
 
-        return  new PageResult(total,records);
+        return new PageResult(total, records);
+    }
+
+    /**
+     * 启用禁用员工账号
+     *
+     * @param status
+     * @param id
+     * @return
+     */
+    public void startOrStop(Integer status, Long id) {
+        Employee employee = Employee.builder().
+                id(id).
+                status(status).
+                build();
+        employeeMapper.startOrStop(employee);
     }
 
 }
